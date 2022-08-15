@@ -1,7 +1,6 @@
 from django.db import models
 from account.models import User
 
-
 STATUS = ((0, 'Не забронировано'), (1, 'Забронировано'))
 
 class Room(models.Model):
@@ -10,6 +9,7 @@ class Room(models.Model):
     description = models.TextField()
     user = models.ForeignKey(User, related_name='rooms', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='rooms', null=True, blank=True)
+    status = models.IntegerField(choices=STATUS, default=0)
 
     def __str__(self):
         return f"{self.user.username} => {self.title}"
