@@ -24,7 +24,7 @@ class RoomViewSet(ModelViewSet):
         context["request"] = self.request
         return context
 
-    @swagger_auto_schema(manual_parameters=[openapi.Parameter("title", openapi.IN_QUERY, "search products by title", type=openapi.TYPE_STRING)])
+    @swagger_auto_schema(manual_parameters=[openapi.Parameter("title", openapi.IN_QUERY, "search rooms by title", type=openapi.TYPE_STRING)])
     @action(methods=["GET"], detail=False)
     def search(self, request):
         title = request.query_params.get("title")
@@ -39,7 +39,7 @@ class RoomViewSet(ModelViewSet):
         rating = request.query_params.get("rating")
         queryset =self.get_queryset()
 
-        queryset = sorted(queryset, key=lambda product: product.average_rating, reverse=True)
+        queryset = sorted(queryset, key=lambda room: room.average_rating, reverse=True)
         serializer = RoomSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
