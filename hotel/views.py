@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import mixins, filters
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.decorators import api_view, action
-from .models import Product, Category, Comment, Like, Rating
-from .serializers import ProductSerializer, CategorySerializer, CommentSerializer
+from .models import Product, Category, Comment, Like
+from .serializers import ProductSerializer, CommentSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .permissions import IsAuthor
