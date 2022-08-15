@@ -12,6 +12,11 @@ class Room(models.Model):
         return f"{self.user.username} => {self.title}"
 
 
+class Rating(models.Model):
+    user = models.ForeignKey(User, related_name='ratings', on_delete=models.CASCADE)
+    product = models.ForeignKey(Room, related_name='ratings', on_delete=models.CASCADE)
+    value = models.IntegerField(choices=[(1,1), (2,2), (3,3), (4,4), (5,5)])
+
 class Comment(models.Model):
     body = models.TextField()
     created_at = models.DateField(auto_now_add=True)
