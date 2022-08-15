@@ -24,6 +24,7 @@ class Room(models.Model):
             return sum(ratings) / len(ratings)
         return 0
 
+
 class Rating(models.Model):
     user = models.ForeignKey(User, related_name='ratings', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='ratings', on_delete=models.CASCADE)
