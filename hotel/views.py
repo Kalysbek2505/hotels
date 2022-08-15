@@ -88,3 +88,5 @@ def add_rating(request, p_id):
     else:
         Rating.objects.create(user=user, room=room, value=value)
     return Response("rating created", 201)
+
+    new
