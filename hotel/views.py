@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import mixins, filters
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.decorators import api_view, action
-from .models import Room, Comment, Like, Rating
+from .models import Booking, Room, Comment, Like, Rating
 from .serializers import RoomSerializer, CommentSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
@@ -24,6 +24,7 @@ class RoomViewSet(ModelViewSet):
         context["request"] = self.request
         return context
 
+
     @swagger_auto_schema(manual_parameters=[openapi.Parameter("title", openapi.IN_QUERY, "search rooms by title", type=openapi.TYPE_STRING)])
     @action(methods=["GET"], detail=False)
     def search(self, request):
@@ -33,6 +34,7 @@ class RoomViewSet(ModelViewSet):
             queryset = queryset.filter(title__icontains=title)
         serializer = RoomSerializer(queryset, many=True, context={"request":request})
         return Response(serializer.data, 200)
+
 
     @action(methods=["GET"], detail=False)
     def order_by_rating(self, request):
@@ -88,3 +90,19 @@ def add_rating(request, p_id):
     else:
         Rating.objects.create(user=user, room=room, value=value)
     return Response("rating created", 201)
+
+
+
+@api_view(['POST'])
+def status(request, p_id):
+    user = request.user
+    room = get_object_or_404(Room, id=p_id)
+
+    if Booking.objects.filter(user=user, room=room).exists():
+        Booking.objects.filter(user=user, room=room).delete()
+        room.status = 0
+    else:
+        Booking.objects.create(user=user, room=room)
+        room.status = 1
+    room.save()
+    return Response("Забронировано", 200)

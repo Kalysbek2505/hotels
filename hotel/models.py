@@ -1,12 +1,15 @@
 from django.db import models
 from account.models import User
 
+STATUS = ((0, 'Не забронировано'), (1, 'Забронировано'))
+
 class Room(models.Model):
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
     user = models.ForeignKey(User, related_name='rooms', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='rooms', null=True, blank=True)
+    status = models.IntegerField(choices=STATUS, default=0)
 
     def __str__(self):
         return f"{self.user.username} => {self.title}"
@@ -45,3 +48,9 @@ class Like(models.Model):
     def __str__(self):
         return f"Like{self.user.username} -> {self.room.title}"
 
+
+class Booking(models.Model):
+    user = models.ForeignKey(User, related_name='bookings', on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, related_name='bookings', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    statususer = models.IntegerField(Room, choices=STATUS, default=1)
