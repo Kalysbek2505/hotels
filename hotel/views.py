@@ -3,7 +3,7 @@ from rest_framework import mixins, filters
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.decorators import api_view, action
 from .models import Room, Comment, Like, Rating
-from .serializers import ProductSerializer, CommentSerializer
+from .serializers import RoomSerializer, CommentSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .permissions import IsAuthor
@@ -13,7 +13,7 @@ from rest_framework import generics
 
 class RoomViewSet(ModelViewSet):
     queryset = Room.objects.all()
-    serializer_class = ProductSerializer
+    serializer_class = RoomSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [filters.OrderingFilter]
     orfering_fields = ['title', 'price', 'average_rating'] 
@@ -31,7 +31,7 @@ class RoomViewSet(ModelViewSet):
         queryset = self.get_queryset()
         if title:
             queryset = queryset.filter(title__icontains=title)
-        serializer = ProductSerializer(queryset, many=True, context={"request":request})
+        serializer = RoomSerializer(queryset, many=True, context={"request":request})
         return Response(serializer.data, 200)
 
     @action(methods=["GET"], detail=False)
@@ -40,7 +40,7 @@ class RoomViewSet(ModelViewSet):
         queryset =self.get_queryset()
 
         queryset = sorted(queryset, key=lambda product: product.average_rating, reverse=True)
-        serializer = ProductSerializer(queryset, many=True, context={"request": request})
+        serializer = RoomSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
 
 class CommentViewSet(mixins.CreateModelMixin,
