@@ -54,5 +54,5 @@ class User(AbstractUser):
         from django.core.mail import send_mail
         self.generate_activation_code()
         activation_url = f'http://127.0.0.1:8000/account/activate/{self.activation_code}/'
-        message = f'Активируйте свой аккаунт, перейдя по ссылке {activation_url}'
-        send_mail("Аккаунт активирован", message, "shop@gmail.com", [self.email])
+        message = f'Activate your account, following this link {activation_url}'
+        send_mail("Activate account", message, "shop@gmail.com", [self.email])
