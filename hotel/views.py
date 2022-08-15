@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import mixins, filters
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.decorators import api_view, action
-from .models import Product, Category, Comment, Like
+from .models import Room, Comment, Like
 from .serializers import ProductSerializer, CommentSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
@@ -12,7 +12,7 @@ from drf_yasg import openapi
 from rest_framework import generics
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Room.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [filters.OrderingFilter]
@@ -61,7 +61,7 @@ class CommentViewSet(mixins.CreateModelMixin,
 @api_view(["GET"])
 def toggle_like(request, p_id):
     user = request.user
-    product = get_object_or_404(Product, id=p_id)
+    product = get_object_or_404(Room, id=p_id)
     
     if Like.objects.filter(user=user, product=product).exists():
         Like.objects.filter(user=user, product=product).delete()
@@ -72,7 +72,7 @@ def toggle_like(request, p_id):
 @api_view(["POST"])
 def add_rating(request, p_id):
     user = request.user
-    product = get_object_or_404(Product, id=p_id)
+    product = get_object_or_404(Room, id=p_id)
     value = request.POST.get("value")
 
     if not user.is_authenticated:
