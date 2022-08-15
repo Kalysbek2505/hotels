@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from .models import Room, Comment, Like
 
-class ProductSerializer(serializers.ModelSerializer):
+class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = '__all__'
