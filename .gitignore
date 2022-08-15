@@ -1,3 +1,4 @@
-venv/
 __pycache__/
+venv/
+>>>>>>> 9251b1b67e150f9d7531e8175d2bb6f558677de3
 .env
