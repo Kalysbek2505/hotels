@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Room, Comment, Like
+from .models import Room, Comment, Like, Rating
 
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,8 +15,13 @@ class RoomSerializer(serializers.ModelSerializer):
         rep["liked_by_user"] = False
         rep["user_rating"] = 0
         request = self.context.get("request")
+
         if request.user.is_authenticated:
-            rep["liked_by_user"] = Like.objects.filter(user=request.user, product=instance).exists()
+            rep["liked_by_user"] = Like.objects.filter(user=request.user, room=instance).exists()
+            if Rating.objects.filter(user=request.user, room=instance).exists():
+                rating = Rating.objects.get(user=request.user, room=instance)
+                rep["user_rating"] = rating.value
+
         return rep
 
 
