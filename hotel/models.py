@@ -10,6 +10,12 @@ class Room(models.Model):
 
     def __str__(self):
         return f"{self.user.username} => {self.title}"
+    @property
+    def average_rating(self):
+        ratings = [rating.value for rating in self.ratings.all()]
+        if ratings:
+            return sum(ratings) / len(ratings)
+        return 0
 
     @property
     def average_rating(self):
