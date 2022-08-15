@@ -12,7 +12,7 @@ class RegisterAPIView(APIView):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response('Аккаунт создан')
+            return Response('Account created')
 
 @api_view(["GET"])
 def activate(request, activation_code):
