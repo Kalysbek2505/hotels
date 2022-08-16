@@ -8,9 +8,6 @@ admin.site.register(Room)
 admin.site.register(Comment)
 admin.site.register(Like)
 admin.site.register(Rating)
-
-admin.site.register(Booking, PostAdmin)
-
 admin.site.register(Favorite)
 admin.site.register(Booking)
 
