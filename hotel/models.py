@@ -7,6 +7,7 @@ STATUS = ((0, 'Не забронировано'), (1, 'Забронирован�
 class Room(models.Model):
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    adress = models.CharField(max_length=255)
     description = models.TextField()
     user = models.ForeignKey(User, related_name='rooms', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='rooms', null=True, blank=True)
@@ -50,13 +51,13 @@ class Booking(models.Model):
     user = models.ForeignKey(User, related_name='bookings', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='bookings', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    arrival_time = models.DateTimeField()
+    departure_time = models.DateTimeField()
 
 
-# надо проверять
 class Favorite(models.Model):
     user = models.ForeignKey(User, related_name='favorites', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='favorites', on_delete=models.CASCADE)
-    favorited = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.username} -> {self.room.title}"

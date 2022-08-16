@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import filters
+from rest_framework import filters, mixins
 from rest_framework.generics import ListAPIView
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.decorators import api_view, action
 from .models import Room, Comment, Like, Rating, Favorite, Booking
-from .serializers import RoomSerializer, CommentSerializer, BookingSerializer
+from .serializers import FavoriteSerializer, RoomSerializer, CommentSerializer, BookingSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .permissions import IsAuthor
@@ -98,21 +98,19 @@ class BookingViewSet(ModelViewSet):
 
 
 # надо проверять
-class FavoriteViewSet(ModelViewSet):
-    queryset = Room.objects.all()
-    serializer_class = RoomSerializer
-    @action(detail=True, methods=['GET'])
-    def add_to_favorite(self, request, pk):
-        user = request.user
-        room = get_object_or_404(Room, id=pk)   
-        favorited_obj = Favorite.objects.get(user=user, room=room)
+class FavoriteViewSet(mixins.ListModelMixin, GenericViewSet):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
 
-        if favorited_obj.favorited == False:
-            favorited_obj.favorited = not favorited_obj.favorited
-            favorited_obj.save()
-            return Response('Added to favorite')
-        else:
-            favorited_obj.favorited = not favorited_obj.favorited
-            favorited_obj.save()
-            return Response('Deleted from favorites')
 
+
+@api_view(["GET"])
+def add_to_favorite(request, p_id):
+    user = request.user
+    room = get_object_or_404(Room, id=p_id)
+    
+    if Favorite.objects.filter(user=user, room=room).exists():
+        Favorite.objects.filter(user=user, room=room).delete()
+    else:
+        Favorite.objects.create(user=user, room=room)
+    return Response("Favorite toggled", 200)
