@@ -159,12 +159,12 @@ SIMPLE_JWT = {
 
 SWAGGER_SETTINGS = {
    'SECURITY_DEFINITIONS': {
-      'Bearer': {
+        'Bearer': {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header'
-      }
-   }
+        }
+    }
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' 

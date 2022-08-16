@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 from account.models import User
 
@@ -9,8 +10,7 @@ class Room(models.Model):
     description = models.TextField()
     user = models.ForeignKey(User, related_name='rooms', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='rooms', null=True, blank=True)
-    status = models.IntegerField(choices=STATUS, default=0)
-
+    status = models.IntegerField(choices=STATUS)
     def __str__(self):
         return f"{self.user.username} => {self.title}"
     @property
@@ -20,17 +20,14 @@ class Room(models.Model):
             return sum(ratings) / len(ratings)
         return 0
 
-    @property
-    def average_rating(self):
-        ratings = [rating.value for rating in self.ratings.all()]
-        if ratings:
-            return sum(ratings) / len(ratings)
-        return 0
+
 
 class Rating(models.Model):
     user = models.ForeignKey(User, related_name='ratings', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='ratings', on_delete=models.CASCADE)
     value = models.IntegerField(choices=[(1,1), (2,2), (3,3), (4,4), (5,5)])
+
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
@@ -40,6 +37,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment{self.user.username} -> {self.room.title} [{self.created_at}]"
+
 
 class Like(models.Model):
     user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
@@ -52,7 +50,22 @@ class Booking(models.Model):
     user = models.ForeignKey(User, related_name='bookings', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='bookings', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+<<<<<<< HEAD
     statususer = models.IntegerField(Room, choices=STATUS, default=1)
 
 
     
+=======
+
+
+# надо проверять
+class Favorite(models.Model):
+    user = models.ForeignKey(User, related_name='favorites', on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, related_name='favorites', on_delete=models.CASCADE)
+    favorited = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} -> {self.room.title}"
+
+
+>>>>>>> d505fc8e30ef3d4d46bdb23fd23c37b9272451c8
