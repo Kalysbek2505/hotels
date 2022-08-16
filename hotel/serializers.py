@@ -3,9 +3,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 
 
-from .models import Booking, Room, Comment, Like, Rating
 
-from .models import Room, Comment, Like, Rating, Favorite, Booking
+from .models import Room, Comment, Like, Rating, Favorite, Booking, Chat
 
 
 class RoomSerializer(serializers.ModelSerializer):
@@ -26,7 +25,6 @@ class RoomSerializer(serializers.ModelSerializer):
         return rep
 
 
-
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
@@ -42,13 +40,19 @@ class CommentSerializer(serializers.ModelSerializer):
         return rep
 
 
-class BookingSerializer(serializers.ModelSerializer):
+class ChatSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Booking
+        model = Chat
         exclude = ['user']
-        
 
+    def create(self, validated_data):
+        validated_data["user"] = self.context.get("request").user
+        return super().create(validated_data)
 
+    def to_representation(self, instance):
+        rep  = super().to_representation(instance)
+        rep["user"] = instance.user.email
+        return rep
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
@@ -64,8 +68,6 @@ class FavoriteSerializer(serializers.ModelSerializer):
         rep  = super().to_representation(instance)
         rep["user"] = instance.user.email
         return rep
-
-
 
 
 class BookingSerializer(serializers.ModelSerializer):

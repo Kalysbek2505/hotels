@@ -1,13 +1,15 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
 
-from .views import BookingViewSet, CommentViewSet, RoomViewSet, add_rating, toggle_like, FavoriteViewSet, add_to_favorite
+from .views import BookingViewSet, ChatViewSet, CommentViewSet, RoomViewSet, add_rating, toggle_like, FavoriteViewSet, add_to_favorite
 
 router = DefaultRouter()
 router.register('rooms', RoomViewSet)
 router.register('comments', CommentViewSet)
 router.register('bookings', BookingViewSet)
 router.register('favorites', FavoriteViewSet)
+router.register('chats', ChatViewSet)
+
 
 
 

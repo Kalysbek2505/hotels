@@ -5,8 +5,8 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.decorators import api_view, action
 from .models import Booking, Room, Comment, Like, Rating
 from .serializers import RoomSerializer, CommentSerializer
-from .models import Room, Comment, Like, Rating, Favorite, Booking
-from .serializers import FavoriteSerializer, RoomSerializer, CommentSerializer, BookingSerializer
+from .models import Room, Comment, Like, Rating, Favorite, Booking, Chat
+from .serializers import FavoriteSerializer, RoomSerializer, CommentSerializer, BookingSerializer, ChatSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .permissions import IsAuthor
@@ -61,6 +61,16 @@ class CommentViewSet(ModelViewSet):
         context = super().get_serializer_context()
         context["request"] = self.request
         return context
+
+class ChatViewSet(ModelViewSet):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+    permission_classes = [IsAuthenticated, IsAuthor]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["request"] = self.request
+        return context
        
 @api_view(["GET"])
 def toggle_like(request, p_id):
@@ -93,33 +103,7 @@ def add_rating(request, p_id):
         Rating.objects.create(user=user, room=room, value=value)
     return Response("rating created", 201)
 
-
-
-
-@api_view(['POST'])
-def status(request, p_id):
-    user = request.user
-    room = get_object_or_404(Room, id=p_id)
-
-    if Booking.objects.filter(user=user, room=room).exists():
-        Booking.objects.filter(user=user, room=room).delete()
-        room.status = 0
-    else:
-        Booking.objects.create(user=user, room=room)
-        room.status = 1
-    room.save()
-    return Response("Забронировано", 200)
-
     
-
-
- 
-
-
-
-
-
-
 class BookingViewSet(ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
@@ -130,12 +114,9 @@ class BookingViewSet(ModelViewSet):
         return context
 
 
-
-# надо проверять
 class FavoriteViewSet(mixins.ListModelMixin, GenericViewSet):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
-
 
 
 @api_view(["GET"])

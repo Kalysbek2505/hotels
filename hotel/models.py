@@ -22,12 +22,18 @@ class Room(models.Model):
         return 0
 
 
+class Chat(models.Model):
+    user = models.ForeignKey(User, related_name='chats', on_delete=models.CASCADE)
+    sms = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"Chats{self.user.username} -> {self.sms.title} [{self.created_at}]"
+
 
 class Rating(models.Model):
     user = models.ForeignKey(User, related_name='ratings', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='ratings', on_delete=models.CASCADE)
     value = models.IntegerField(choices=[(1,1), (2,2), (3,3), (4,4), (5,5)])
-
 
 
 class Comment(models.Model):

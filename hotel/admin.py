@@ -10,4 +10,5 @@ admin.site.register(Like)
 admin.site.register(Rating)
 admin.site.register(Favorite)
 admin.site.register(Booking)
+admin.site.register(Chat)
 
