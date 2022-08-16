@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Room, Comment, Like, Rating
+from .models import Booking, Room, Comment, Like, Rating
 
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
@@ -39,3 +39,9 @@ class CommentSerializer(serializers.ModelSerializer):
         rep  = super().to_representation(instance)
         rep["user"] = instance.user.email
         return rep
+
+class BookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        exclude = ['user']
+        

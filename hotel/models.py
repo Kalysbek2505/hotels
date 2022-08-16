@@ -47,3 +47,12 @@ class Like(models.Model):
     def __str__(self):
         return f"Like{self.user.username} -> {self.room.title}"
 
+
+class Booking(models.Model):
+    user = models.ForeignKey(User, related_name='bookings', on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, related_name='bookings', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    statususer = models.IntegerField(Room, choices=STATUS, default=1)
+
+
+    

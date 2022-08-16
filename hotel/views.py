@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import mixins, filters
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.decorators import api_view, action
-from .models import Room, Comment, Like, Rating
+from .models import Booking, Room, Comment, Like, Rating
 from .serializers import RoomSerializer, CommentSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
@@ -10,6 +10,8 @@ from .permissions import IsAuthor
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from rest_framework import generics
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, authenticate
 
 class RoomViewSet(ModelViewSet):
     queryset = Room.objects.all()
@@ -42,6 +44,7 @@ class RoomViewSet(ModelViewSet):
         queryset = sorted(queryset, key=lambda room: room.average_rating, reverse=True)
         serializer = RoomSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
+    
 
 class CommentViewSet(mixins.CreateModelMixin,
                     mixins.UpdateModelMixin,
@@ -88,3 +91,31 @@ def add_rating(request, p_id):
     else:
         Rating.objects.create(user=user, room=room, value=value)
     return Response("rating created", 201)
+
+
+
+
+@api_view(['POST'])
+def status(request, p_id):
+    user = request.user
+    room = get_object_or_404(Room, id=p_id)
+
+    if Booking.objects.filter(user=user, room=room).exists():
+        Booking.objects.filter(user=user, room=room).delete()
+        room.status = 0
+    else:
+        Booking.objects.create(user=user, room=room)
+        room.status = 1
+    room.save()
+    return Response("Забронировано", 200)
+
+    
+
+
+ 
+
+
+
+
+
+    
