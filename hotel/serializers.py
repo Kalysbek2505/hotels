@@ -2,11 +2,11 @@ from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 
-<<<<<<< HEAD
+
 from .models import Booking, Room, Comment, Like, Rating
-=======
+
 from .models import Room, Comment, Like, Rating, Favorite, Booking
->>>>>>> d505fc8e30ef3d4d46bdb23fd23c37b9272451c8
+
 
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,13 +44,13 @@ class CommentSerializer(serializers.ModelSerializer):
         rep["user"] = instance.user.email
         return rep
 
-<<<<<<< HEAD
+
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         exclude = ['user']
         
-=======
+
 
 
 
@@ -91,4 +91,4 @@ class BookingSerializer(serializers.ModelSerializer):
         rep  = super().to_representation(instance)
         rep["user"] = instance.user.email
         return rep
->>>>>>> d505fc8e30ef3d4d46bdb23fd23c37b9272451c8
+

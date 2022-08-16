@@ -50,12 +50,10 @@ class Booking(models.Model):
     user = models.ForeignKey(User, related_name='bookings', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='bookings', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-<<<<<<< HEAD
     statususer = models.IntegerField(Room, choices=STATUS, default=1)
 
 
     
-=======
 
 
 # надо проверять
@@ -68,4 +66,3 @@ class Favorite(models.Model):
         return f"{self.user.username} -> {self.room.title}"
 
 
->>>>>>> d505fc8e30ef3d4d46bdb23fd23c37b9272451c8
