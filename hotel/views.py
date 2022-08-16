@@ -138,7 +138,6 @@ class FavoriteViewSet(mixins.ListModelMixin, GenericViewSet):
 
 
 
-<<<<<<< HEAD
 @api_view(["GET"])
 def add_to_favorite(request, p_id):
     user = request.user
@@ -149,5 +148,3 @@ def add_to_favorite(request, p_id):
     else:
         Favorite.objects.create(user=user, room=room)
     return Response("Favorite toggled", 200)
-=======
->>>>>>> e43e764881aebe0932e35f9adab9a8dd8ab7dc12
