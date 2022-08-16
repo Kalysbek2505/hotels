@@ -3,6 +3,8 @@ from rest_framework import filters, mixins
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.decorators import api_view, action
+from .models import Booking, Room, Comment, Like, Rating
+from .serializers import RoomSerializer, CommentSerializer
 from .models import Room, Comment, Like, Rating, Favorite, Booking
 from .serializers import FavoriteSerializer, RoomSerializer, CommentSerializer, BookingSerializer
 from rest_framework.response import Response
@@ -10,6 +12,10 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from .permissions import IsAuthor
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from rest_framework import generics
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, authenticate
+
 
 class RoomViewSet(ModelViewSet):
     queryset = Room.objects.all()
@@ -44,6 +50,7 @@ class RoomViewSet(ModelViewSet):
         queryset = sorted(queryset, key=lambda room: room.average_rating, reverse=True)
         serializer = RoomSerializer(queryset, many=True, context={"request": request})
         return Response(serializer.data)
+    
 
 class CommentViewSet(ModelViewSet):
     queryset = Comment.objects.all()
@@ -86,6 +93,33 @@ def add_rating(request, p_id):
         Rating.objects.create(user=user, room=room, value=value)
     return Response("rating created", 201)
 
+
+
+
+@api_view(['POST'])
+def status(request, p_id):
+    user = request.user
+    room = get_object_or_404(Room, id=p_id)
+
+    if Booking.objects.filter(user=user, room=room).exists():
+        Booking.objects.filter(user=user, room=room).delete()
+        room.status = 0
+    else:
+        Booking.objects.create(user=user, room=room)
+        room.status = 1
+    room.save()
+    return Response("Забронировано", 200)
+
+    
+
+
+ 
+
+
+
+
+
+
 class BookingViewSet(ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
@@ -104,6 +138,7 @@ class FavoriteViewSet(mixins.ListModelMixin, GenericViewSet):
 
 
 
+<<<<<<< HEAD
 @api_view(["GET"])
 def add_to_favorite(request, p_id):
     user = request.user
@@ -114,3 +149,5 @@ def add_to_favorite(request, p_id):
     else:
         Favorite.objects.create(user=user, room=room)
     return Response("Favorite toggled", 200)
+=======
+>>>>>>> e43e764881aebe0932e35f9adab9a8dd8ab7dc12

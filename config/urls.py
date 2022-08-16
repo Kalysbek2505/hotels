@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from hotel import views
 
 
 
@@ -36,6 +37,7 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('docs/', schema_view.with_ui('swagger')),
     path('', include('hotel.urls')),
+    # path('', views.index, name='homepage')
 ]
 
 

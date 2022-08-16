@@ -51,8 +51,15 @@ class Booking(models.Model):
     user = models.ForeignKey(User, related_name='bookings', on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name='bookings', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+<<<<<<< HEAD
     arrival_time = models.DateTimeField()
     departure_time = models.DateTimeField()
+=======
+    statususer = models.IntegerField(Room, choices=STATUS, default=1)
+
+
+    
+>>>>>>> e43e764881aebe0932e35f9adab9a8dd8ab7dc12
 
 
 class Favorite(models.Model):
