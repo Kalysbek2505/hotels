@@ -1,10 +1,8 @@
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
 
 
-
-from .models import Room, Comment, Like, Rating, Favorite, Booking, Chat
+from .models import Room, Comment, Rating, Favorite, Booking, Chat
 
 
 class RoomSerializer(serializers.ModelSerializer):
@@ -36,7 +34,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         rep  = super().to_representation(instance)
-        rep["user"] = instance.user.email
+        rep["user"] = instance.user.username
         return rep
 
 
@@ -51,7 +49,7 @@ class ChatSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         rep  = super().to_representation(instance)
-        rep["user"] = instance.user.email
+        rep["user"] = instance.user.username
         return rep
 
 

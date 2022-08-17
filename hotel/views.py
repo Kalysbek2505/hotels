@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import filters, mixins
-from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.decorators import api_view, action
 from .models import Booking, Room, Comment, Like, Rating
@@ -12,9 +11,6 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from .permissions import IsAuthor
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-from rest_framework import generics
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
 
 
 class RoomViewSet(ModelViewSet):
@@ -128,4 +124,4 @@ def add_to_favorite(request, p_id):
         Favorite.objects.filter(user=user, room=room).delete()
     else:
         Favorite.objects.create(user=user, room=room)
-    return Response("Favorite toggled", 200)
+    return Response("Favorite added", 200)
