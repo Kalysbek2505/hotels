@@ -6,3 +6,5 @@ drf-yasg
 psycopg2-binary
 python-decouple
 aiogram
+social-auth-app-django
+social-auth-app-django-mongoengine

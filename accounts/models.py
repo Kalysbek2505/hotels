@@ -60,4 +60,7 @@ class User(AbstractUser):
         send_mail("Activate account", message, "shop@gmail.com", [self.email])
 
         send_mail("Activate account", message, "shop@gmail.com", [self.email])
+    
+    def __str__(self):
+        return f'{self.username}-{self.email}'
 

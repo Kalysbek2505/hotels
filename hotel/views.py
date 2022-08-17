@@ -16,6 +16,12 @@ from rest_framework import generics
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 
+from django.views.generic import TemplateView
+
+
+
+class Home(TemplateView):
+    template_name = "home.html"
 
 class RoomViewSet(ModelViewSet):
     queryset = Room.objects.all()
