@@ -22,13 +22,13 @@ async def help_command(message: types.Message):
 @dp.message_handler()
 async def order_commands(message: types.Message):
     if message.text == '/docs':
-        await bot.send_message(message.from_user.id, 'http://127.0.0.1:8000/docs/')
+        await bot.send_message(message.from_user.id, 'Это Swagger\nhttp://127.0.0.1:8000/docs/')
     elif message.text == '/rooms':
-        await bot.send_message(message.from_user.id, 'http://127.0.0.1:8000/rooms/')
+        await bot.send_message(message.from_user.id, 'Это чтобы увидеть данные\nhttp://127.0.0.1:8000/rooms/')
     elif message.text == '/admin':
-        await bot.send_message(message.from_user.id, 'http://127.0.0.1:8000/admin/')
+        await bot.send_message(message.from_user.id, 'Это админка\nhttp://127.0.0.1:8000/admin/')
     elif message.text == '/api_token':
-        await bot.send_message(message.from_user.id, 'http://127.0.0.1:8000/account/api/token/')
+        await bot.send_message(message.from_user.id, 'Тут можно брать api token\nhttp://127.0.0.1:8000/account/api/token/')
 
 
 
