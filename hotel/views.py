@@ -12,6 +12,12 @@ from .permissions import IsAuthor
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
+from django.views.generic import TemplateView
+
+
+
+class Home(TemplateView):
+    template_name = "home.html"
 
 class RoomViewSet(ModelViewSet):
     queryset = Room.objects.all()

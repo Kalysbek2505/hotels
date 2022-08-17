@@ -1,5 +1,5 @@
 from django.db import models
-from account.models import User
+from accounts.models import User
 
 STATUS = ((0, 'Не забронировано'), (1, 'Забронировано'))
 
